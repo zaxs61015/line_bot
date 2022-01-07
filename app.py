@@ -11,7 +11,7 @@ import configparser
 import random
 
 from hello import getweather
-from keep_alive import keep_alive
+
 app = Flask(__name__)
 
 # LINE 聊天機器人的基本資料
@@ -86,9 +86,28 @@ def prettyEcho(event):
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=sendString))
     else:
-        sendString = event.message.text
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=sendString))
+        line_bot_api.reply_message(event.reply_token, TemplateSendMessage(
+            alt_text='功能說明',
+            template=ButtonsTemplate(
+                title='功能說明',
+                text='HI!HI! 回覆我"抽"、"擲筊"、"天氣 縣市"會有驚喜，也可以按下面按鈕快速開始',
+                thumbnail_image_url='https://i.pinimg.com/236x/8b/ea/c8/8beac8cff0565cbd771d3aae90f82a7f.jpg',
+                actions=[
+                    MessageTemplateAction(
+                        label='抽運勢',
+                        text='抽'
+                    ),
+                    MessageTemplateAction(
+                        label='擲筊',
+                        text='擲筊'
+                    ),
+                    MessageTemplateAction(
+                        label='查詢天氣',
+                        text='天氣 台北市'
+                    )
+                ]
+            )
+        ))
 
 
 def divinationBlocks():
